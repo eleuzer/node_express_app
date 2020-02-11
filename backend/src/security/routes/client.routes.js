@@ -7,8 +7,10 @@ module.exports = (app) => {
 
     // Create endpoint handlers for /clients
     router.route('/clients')
-        .post(authController.isAuthenticated, clientController.postClients)
-        .get(authController.isAuthenticated, clientController.getClients);
+        .post(authController.isAuthenticated, clientController.postClients);
+
+    router.route('/clients/authorize')
+        .post(authController.isAuthenticated, clientController.getClients);    
 
     // Register all our routes with /api
     app.use('/api', router);

@@ -6,8 +6,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PessoaService } from 'app/services/pessoa.service';
 import { ProdutoService } from 'app/services/produto.service';
 import { MessageService } from 'app/services/message.service';
-import { Pedido } from 'app/model/pedido';
-import { ItemPedido } from 'app/model/itemPedido';
+import { Pedido } from 'app/models/pedido';
+import { ItemPedido } from 'app/models/itemPedido';
 
 @Component({
   selector: 'pedido-edit',

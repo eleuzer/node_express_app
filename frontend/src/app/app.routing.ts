@@ -7,9 +7,15 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginLayoutComponent } from './login/login-layout.component';
 
 const routes: Routes = [
+  
   {
     path: '',
     redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'index',
+    redirectTo: 'pessoa-list',
     pathMatch: 'full',
   },
   {

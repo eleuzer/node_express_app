@@ -1,7 +1,9 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'app/services/message.service';
+import { AuthenticationService } from 'app/login/services/authentication.service ';
 
 @Component({
     selector: 'login',
@@ -10,12 +12,14 @@ import { MessageService } from 'app/services/message.service';
 })
 export class LoginComponent implements OnInit {
 
-    private usuario: String;
-    private senha: String;
+    private usuario: string;
+    private senha: string;
     private registerForm: FormGroup;
 
     constructor(public fb: FormBuilder,
-        private messageService: MessageService) {
+        private messageService: MessageService,
+        private authenticationService: AuthenticationService,
+        private router: Router) {
 
     }
 
@@ -33,16 +37,20 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        // this.pessoaService.insertOrUpdade(this.dataSource).subscribe(
-        //     (result: any) => {
-        //         this.messageService.success('Salvo com sucesso!');
-        //         this.router.navigate(['/pessoa-list']);
-        //     },
-        //     (error) => {
-        //         console.log(error);
-        //         this.messageService.error('Erro!' + error.message);
-        //     });
+        this.authenticationService.login(this.usuario, this.senha).subscribe(
+            (result: any) => {
+                this.router.navigate(['/index']);
+            },
+            (error) => {
+                console.log(error);
+                this.messageService.error('Erro!' + error.message);
+                this.router.navigate(['/login']);
+            });
 
+    }
+
+    register() {
+       this.router.navigate(['/register']);     
     }
 
 }

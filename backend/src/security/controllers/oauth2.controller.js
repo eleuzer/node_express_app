@@ -21,11 +21,11 @@ var server = oauth2orize.createServer();
 // simple matter of serializing the client's ID, and deserializing by finding
 // the client by ID from the database.
 
-server.serializeClient(function(client, callback) {
+server.serializeClient(function (client, callback) {
   return callback(null, client._id);
 });
 
-server.deserializeClient(function(id, callback) {
+server.deserializeClient(function (id, callback) {
   Client.findOne({ _id: id }, function (err, client) {
     if (err) { return callback(err); }
     return callback(null, client);
@@ -46,7 +46,7 @@ server.deserializeClient(function(id, callback) {
 // the application.  The application issues a code, which is bound to these
 // values, and will be exchanged for an access token.
 
-server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, callback) {
+server.grant(oauth2orize.grant.code(function (client, redirectUri, user, ares, callback) {
   // Create a new authorization code
   var code = new Code({
     value: uid(16),
@@ -56,7 +56,7 @@ server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, ca
   });
 
   // Save the auth code and check for errors
-  code.save(function(err) {
+  code.save(function (err) {
     if (err) { return callback(err); }
 
     callback(null, code.value);
@@ -69,7 +69,7 @@ server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, ca
 // application issues an access token on behalf of the user who authorized the
 // code.
 
-server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, callback) {
+server.exchange(oauth2orize.exchange.code(function (client, code, redirectUri, callback) {
   Code.findOne({ value: code }, function (err, authCode) {
     if (err) { return callback(err); }
     if (authCode === undefined) { return callback(null, false); }
@@ -78,7 +78,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
 
     // Delete auth code now that it has been used
     authCode.remove(function (err) {
-      if(err) { return callback(err); }
+      if (err) { return callback(err); }
 
       // Create a new access token
       var token = new Token({
@@ -114,7 +114,7 @@ server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, ca
 // first, and rendering the `dialog` view. 
 
 exports.authorization = [
-  server.authorization(function(clientId, redirectUri, callback) {
+  server.authorization(function (clientId, redirectUri, callback) {
 
     Client.findOne({ id: clientId }, function (err, client) {
       if (err) { return callback(err); }
@@ -122,10 +122,66 @@ exports.authorization = [
       return callback(null, client, redirectUri);
     });
   }),
-  function(req, res){
+  function (req, res) {
     res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
   }
 ]
+
+exports.authorizationCode = [
+  server.authorization(function (clientId, redirectUri, callback) {
+
+    Client.findOne({ id: clientId }, function (err, client) {
+      if (err) { return callback(err); }
+
+      return callback(null, client, redirectUri);
+    });
+  }),
+  function (req, res) {
+    res.json({ transactionID: req.oauth2.transactionID });
+  }
+]
+
+exports.getCodeClient = function (req, res) {
+  if (!req.body.clientId) {
+    return res.status(400).send({
+      message: "O clientId é obrigatorio"
+    });
+  }
+
+  if (!req.body.userId) {
+    return res.status(400).send({
+      message: "O userId é obrigatorio"
+    });
+  }
+
+  Code.findOne({ clientId: req.body.clientId, userId: req.body.userId }, function (err, code) {
+    if (err) { return callback(err); }
+
+    res.json(code);
+  })
+
+};
+
+exports.getTokenClient = function (req, res) {
+  if (!req.body.clientId) {
+    return res.status(400).send({
+      message: "O clientId é obrigatorio"
+    });
+  }
+
+  if (!req.body.userId) {
+    return res.status(400).send({
+      message: "O userId é obrigatorio"
+    });
+  }
+
+  Token.findOne({ clientId: req.body.clientId, userId: req.body.userId }, function (err, code) {
+    if (err) { return callback(err); }
+
+    res.json(code);
+  })
+
+};
 
 // user decision endpoint
 //
@@ -160,7 +216,7 @@ exports.token = [
  * @return {String}
  * @api private
  */
-function uid (len) {
+function uid(len) {
   var buf = []
     , chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     , charlen = chars.length;

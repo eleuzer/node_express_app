@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 ml-auto mr-auto">
+            <div class="card">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Cadastro de Usuario</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="registerForm">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Usuario" name="username" formControlName="username"
+                                        [(ngModel)]="dataSource.username">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Email" type="email" name="email"
+                                        formControlName="email" [(ngModel)]="dataSource.email">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Senha" name="password" formControlName="password"
+                                        type="password" [(ngModel)]="dataSource.password">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <button mat-raised-button type="submit" class="btn btn-danger pull-right"
+                            (click)="register()">Salvar</button>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"></div> 
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

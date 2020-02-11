@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 
@@ -13,6 +13,8 @@ import { AppComponent } from './app.component';
 import { AgmCoreModule } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginLayoutComponent } from './login/login-layout.component';
+import { HttpUnauthorizedInterceptor } from './services/http-unauthorized.interceptor';
+import { HttpAuthInterceptor } from './services/http-auth.interceptor';
 
 @NgModule({
   imports: [
@@ -34,7 +36,10 @@ import { LoginLayoutComponent } from './login/login-layout.component';
     LoginLayoutComponent,
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: HttpUnauthorizedInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

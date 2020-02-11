@@ -4,7 +4,7 @@ import { ProdutoService } from 'app/services/produto.service';
 import { MessageService } from 'app/services/message.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Produto } from 'app/model/produto';
+import { Produto } from 'app/models/produto';
 
 @Component({
   selector: 'produto-edit',

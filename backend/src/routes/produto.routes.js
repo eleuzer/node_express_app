@@ -1,14 +1,23 @@
 module.exports = (app) => {
+    const express = require('express');
+    const router = express.Router();
+    const authController = require('../security/controllers/auth.controller.js');
     const produtoController = require('../controllers/produto.controller.js');
 
-    app.post('/produto', produtoController.create);
+    router.route('/produto')
+        .post(authController.isAuthenticated, produtoController.create);
 
-    app.put('/produto/:id', produtoController.update);
+    router.route('/produto/:id')
+        .put(authController.isAuthenticated, produtoController.update);
 
-    app.delete('/produto/:id', produtoController.delete);
+    router.route('/produto/:id')
+        .delete(authController.isAuthenticated, produtoController.delete);
 
-    app.get('/produto/:id', produtoController.findOne);
+    router.route('/produto/:id')
+        .get(authController.isAuthenticated, produtoController.findOne);
 
-    app.get('/produtos', produtoController.findAll);
+    router.route('/produtos')
+        .get(authController.isAuthenticated, produtoController.findAll);
 
+    app.use('/api', router);
 }

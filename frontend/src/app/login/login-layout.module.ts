@@ -3,9 +3,13 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginLayoutRoutes } from './login-layout.routing';
+import { HttpModule } from '@angular/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { LoginComponent } from './login.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { MessageService } from 'app/services/message.service';
+import { AuthenticationService } from './services/authentication.service ';
 
 import {
   MatButtonModule,
@@ -18,6 +22,7 @@ import {
   MatSortModule,
   MatPaginatorModule
 } from '@angular/material';
+import { HttpBasicAuthInterceptor } from './services/http-basic-auth.interceptor';
 
 
 @NgModule({
@@ -26,6 +31,8 @@ import {
     RouterModule.forChild(LoginLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
+    HttpModule,
+    HttpClientModule,
     MatButtonModule,
     MatRippleModule,
     MatFormFieldModule,
@@ -37,10 +44,14 @@ import {
     MatPaginatorModule,
   ],
   declarations: [
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpBasicAuthInterceptor, multi: true },
+    AuthenticationService,
     MessageService
+    
   ]
 })
 export class LoginLayoutModule { }

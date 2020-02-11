@@ -1,14 +1,24 @@
 module.exports = (app) => {
+    const express = require('express');
+    const router = express.Router();
+    const authController = require('../security/controllers/auth.controller.js');
     const pedidoController = require('../controllers/pedido.controller.js');
 
-    app.post('/pedido', pedidoController.create);
+    router.route('/pedido')
+        .post(authController.isAuthenticated, pedidoController.create);
 
-    app.put('/pedido/:id', pedidoController.update);
+    router.route('/pedido/:id')
+        .put(authController.isAuthenticated, pedidoController.update);
 
-    app.delete('/pedido/:id', pedidoController.delete);
+    router.route('/pedido/:id')
+        .delete(authController.isAuthenticated, pedidoController.delete);
 
-    app.get('/pedido/:id', pedidoController.findOne);
+    router.route('/pedido/:id')
+        .get(authController.isAuthenticated, pedidoController.findOne);
 
-    app.get('/pedidos', pedidoController.findAll);
+    router.route('/pedidos')
+        .get(authController.isAuthenticated, pedidoController.findAll);
+
+    app.use('/api', router);
 
 }
