@@ -53,9 +53,15 @@ export class AuthenticationService {
     }
 
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
+        return Observable.create(observer => {
+            // remove user from local storage to log user out
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('token');
+            this.currentUserSubject.next(null);
+
+            observer.next({ message: 'Success!' });
+            observer.complete();
+        });
     }
 
     createToken(user): Observable<any> {

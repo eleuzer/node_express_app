@@ -15,6 +15,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginLayoutComponent } from './login/login-layout.component';
 import { HttpUnauthorizedInterceptor } from './services/http-unauthorized.interceptor';
 import { HttpAuthInterceptor } from './services/http-auth.interceptor';
+import { AuthenticationService } from './login/services/authentication.service ';
 
 @NgModule({
   imports: [
@@ -37,8 +38,9 @@ import { HttpAuthInterceptor } from './services/http-auth.interceptor';
 
   ],
   providers: [
+    AuthenticationService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
-    //{ provide: HTTP_INTERCEPTORS, useClass: HttpUnauthorizedInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpUnauthorizedInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
