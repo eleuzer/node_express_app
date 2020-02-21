@@ -9,7 +9,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { MessageService } from 'app/services/message.service';
-import { AuthenticationService } from './services/authentication.service ';
 
 import {
   MatButtonModule,
@@ -22,7 +21,7 @@ import {
   MatSortModule,
   MatPaginatorModule
 } from '@angular/material';
-import { HttpBasicAuthInterceptor } from './services/http-basic-auth.interceptor';
+
 
 
 @NgModule({
@@ -48,10 +47,7 @@ import { HttpBasicAuthInterceptor } from './services/http-basic-auth.interceptor
     RegisterComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpBasicAuthInterceptor, multi: true },
-    AuthenticationService,
-    MessageService
-    
+    MessageService,
   ]
 })
 export class LoginLayoutModule { }

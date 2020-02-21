@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, BehaviorSubject } from "rxjs";
 import { Settings } from "app/util/settings";
-import { User } from "../models/user";
+import { User } from "../login/models/user";
 
 @Injectable()
 export class AuthenticationService {
@@ -22,7 +22,7 @@ export class AuthenticationService {
         }
         return Observable.create(observer => {
 
-            this.httpClient.post<any>(`${Settings.URL_SERVICE}/clients/authorize`, credentials).subscribe(
+            this.httpClient.post<any>(`${Settings.URL_SERVICE}/security/clients/authorize`, credentials).subscribe(
                 (result: any) => {
                     // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
                     if(!result || result.length == 0) {
@@ -78,7 +78,7 @@ export class AuthenticationService {
         }
 
         return Observable.create(observer => {
-            this.httpClient.post(`${Settings.URL_SERVICE}/oauth2/code`, credentials).subscribe(
+            this.httpClient.post(`${Settings.URL_SERVICE}/security/oauth2/code`, credentials).subscribe(
                 (resultCode: any) => {
                     if (!resultCode) {
                         observer.error("Usuario não encontrado!");
@@ -86,7 +86,7 @@ export class AuthenticationService {
                     }
 
                     credentials.code = resultCode.value;
-                    this.httpClient.post(`${Settings.URL_SERVICE}/oauth2/token`, credentials).subscribe(
+                    this.httpClient.post(`${Settings.URL_SERVICE}/security/oauth2/token`, credentials).subscribe(
                         (resultToken: any) => {
                             localStorage.setItem('currentUser', JSON.stringify(user));
                             localStorage.setItem('token', resultToken.access_token.value);
@@ -118,7 +118,7 @@ export class AuthenticationService {
         }
 
         return Observable.create(observer => {
-            this.httpClient.post(`${Settings.URL_SERVICE}/oauth2/access_token`, credentials).subscribe(
+            this.httpClient.post(`${Settings.URL_SERVICE}/security/oauth2/access_token`, credentials).subscribe(
                 (result: any) => {
                     if (result != null) {
                         localStorage.setItem('currentUser', JSON.stringify(user));
@@ -155,7 +155,7 @@ export class AuthenticationService {
                     result.password = user.password;
                     this.insertClient(result).subscribe(
                         (result: any) => {
-                            window.location.href = `http://localhost:3000/api/oauth2/authorize?client_id=${result.data.id}&response_type=code&redirect_uri=http://localhost:4200/#index`
+                            window.location.href = `http://localhost:3000/api/security/oauth2/authorize?client_id=${result.data.id}&response_type=code&redirect_uri=http://localhost:4200/#index`
                             observer.next({ message: 'Success!' });
                             observer.complete();
                         },
@@ -182,9 +182,12 @@ export class AuthenticationService {
             userId: user._id
         }
 
-        return this.httpClient.post(`${Settings.URL_SERVICE}/clients`, client);
+        return this.httpClient.post(`${Settings.URL_SERVICE}/security/clients`, client);
     }
 
+    public get currentUserValue() {
+        return this.currentUserSubject.value;
+    }
 
 
 }

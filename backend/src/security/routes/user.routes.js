@@ -11,5 +11,5 @@ module.exports = (app) => {
         .get(authController.isAuthenticated, userController.getUsers);
 
     // Register all our routes with /api
-    app.use('/api', router);
+    app.use('/api/security', router);
 }

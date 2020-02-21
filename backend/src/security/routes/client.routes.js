@@ -13,6 +13,6 @@ module.exports = (app) => {
         .post(authController.isAuthenticated, clientController.getClients);    
 
     // Register all our routes with /api
-    app.use('/api', router);
+    app.use('/api/security', router);
 
 }

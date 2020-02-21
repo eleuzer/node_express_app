@@ -5,13 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginLayoutComponent } from './login/login-layout.component';
+import { AuthGuard } from './services/auth-guard';
 
 const routes: Routes = [
   
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full',
+    pathMatch: 'full'
   },
   {
     path: 'index',

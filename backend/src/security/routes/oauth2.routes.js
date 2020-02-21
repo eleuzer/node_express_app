@@ -22,6 +22,6 @@ module.exports = (app) => {
 
 
     // Register all our routes with /api
-    app.use('/api', router);
+    app.use('/api/security', router);
 
 }

@@ -11,6 +11,7 @@ import { ProdutoEditComponent } from 'app/produto-edit/produto-edit.component';
 import { PedidoListComponent } from 'app/pedido-list/pedido-list.component';
 import { PedidoEditComponent } from 'app/pedido-edit/pedido-edit.component';
 
+import { AuthGuard } from 'app/services/auth-guard';
 import { PessoaService } from 'app/services/pessoa.service';
 import { ProdutoService } from 'app/services/produto.service';
 import { MessageService } from 'app/services/message.service';
@@ -56,6 +57,7 @@ import {
     
   ],
   providers: [
+    AuthGuard,
     PessoaService,
     ProdutoService,
     PedidoService,

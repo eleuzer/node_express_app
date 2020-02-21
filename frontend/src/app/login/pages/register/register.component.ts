@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'app/services/message.service';
-import { AuthenticationService } from 'app/login/services/authentication.service ';
+import { AuthenticationService } from 'app/services/authentication.service ';
 
 @Component({
     selector: 'register',
